@@ -5,6 +5,7 @@ import { toast } from 'sonner';
 import axios from 'axios';
 import { Link, useNavigate } from 'react-router-dom';
 import { Loader2 } from 'lucide-react';
+import { useSelector } from 'react-redux';
 
 
 const Signup = () => {
@@ -15,6 +16,7 @@ const Signup = () => {
   });
 
   const [loading, setLoading] = useState(false);
+  const {user} = useSelector(store=>store.auth);
   const navigate = useNavigate();
   const changeEventHandler = (e) => {
     setInput({ ...input, [e.target.name]: e.target.value });
@@ -47,8 +49,9 @@ const Signup = () => {
     }
   }
 
-
-
+  useEffect(()=>{
+    if(user) navigate("/");
+  },[])
 
   return (
     <div className='flex items-center w-screen h-screen justify-center'>

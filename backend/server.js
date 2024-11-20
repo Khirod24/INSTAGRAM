@@ -4,6 +4,9 @@ import cookieParser from "cookie-parser"
 import dotenv from "dotenv";
 dotenv.config({});
 import { app, server } from "./socket/socket.js";
+import path from "path";
+
+const __dirname = path.resolve();
 
 import connectDB from "./utils/db.js";
 connectDB();
@@ -29,7 +32,10 @@ app.use("/api/v1/user",userRoutes);
 app.use("/api/v1/post", postRoutes);
 app.use("/api/v1/message", messageRoutes);
 
-
+app.use(express.static(path.join(__dirname, "/frontend/dist")))
+app.get("*",(req,res)=>{
+    res.sendFile(path.resolve(__dirname, "frontend", "dist", "index.html"));
+})
 
 app.get("/",(req,res)=>{
     return res.status(200).json({
