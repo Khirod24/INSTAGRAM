@@ -9,7 +9,7 @@ import path from "path";
 const __dirname = path.resolve();
 
 import connectDB from "./utils/db.js";
-connectDB();
+
 
 //middlewares
 app.use(express.json());
@@ -45,5 +45,6 @@ app.get("/",(req,res)=>{
 })
 const PORT = process.env.PORT || 8080;
 server.listen(PORT,()=>{
+    connectDB();
     console.log(`Server started at ${PORT}`);
 })
