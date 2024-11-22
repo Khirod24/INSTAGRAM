@@ -7,6 +7,7 @@ import { Button } from "./ui/button";
 import { Badge } from "./ui/badge";
 import { AtSign, Heart, MessageCircle } from "lucide-react";
 import { toast } from "sonner";
+import axios from "axios";
 
 const Profile = () => {
   const params = useParams();
@@ -17,11 +18,9 @@ const Profile = () => {
   const { userProfile, user } = useSelector((store) => store.auth);
 
   const isLoggedInUserProfile = user?._id === userProfile?._id;
-  let [foll,setFoll] = useState("");
+  
   const isFollowing = user?.following.includes(userProfile?._id);
-  if(isFollowing){
-    setFoll("Unfollow");
-  }
+  let [foll,setFoll] = useState(isFollowing?"Unfollow":"Follow");
 
   const handleTabChange = (tab) => {
     setActiveTab(tab);
