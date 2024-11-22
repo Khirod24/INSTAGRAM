@@ -29,26 +29,15 @@ const Profile = () => {
 
   const followOrUnfollowHandle = async()=>{
     try{
-      if(isFollowing){
         const res = await axios.post(`https://instavibe-g534.onrender.com/api/v1/user/followorunfollow/${userProfile?._id}`);
         if(res.data.success){
-         setFollLength((userProfile?.followers.length)-1);
-         isFollowing=!isFollowing;
+         setFollLength((userProfile?.followers.length));
+        //  isFollowing=!isFollowing;
         // setX("Follow");
         // setY("");    
          toast.success(res.data.message);
         }
-      }else{
-        const res = await axios.post(`https://instavibe-g534.onrender.com/api/v1/user/followorunfollow/${userProfile?._id}`);
-        if(res.data.success){
-         setFollLength((userProfile?.followers.length)+1);
-         isFollowing=!isFollowing;
-        // setX("Unfollow");
-        // setY("Message")    
-         toast.success(res.data.message);
-        }
-      }   
-    }catch(e){
+      }catch(e){
       console.log(e);
     }
   }
