@@ -21,7 +21,7 @@ const Profile = () => {
   
   let isFollowing = user?.following.includes(userProfile?._id);
   let [follLength,setFollLength] = useState(userProfile?.followers.length);
-  // let[x,setX] = useState(isFollowing?"Unfollow":"Follow");
+  let[x,setX] = useState(isFollowing?"Unfollow":"Follow");
   // let[y,setY] = useState(x=="Unfollow"?"Message":"");
   const handleTabChange = (tab) => {
     setActiveTab(tab);
@@ -33,7 +33,6 @@ const Profile = () => {
         if(res.data.success){
          setFollLength((userProfile?.followers.length));
         //  isFollowing=!isFollowing;
-        // setX("Follow");
         // setY("");    
          toast.success(res.data.message);
         }
@@ -86,7 +85,7 @@ const Profile = () => {
                       Ad tools
                     </Button>
                    </>) : (<Button variant="secondary" className="h-8" onClick={followOrUnfollowHandle}>
-                   {isFollowing?"Unfollow":"Follow"}
+                   {x}
                    </Button>)
                    
                    /*isFollowing ? (
