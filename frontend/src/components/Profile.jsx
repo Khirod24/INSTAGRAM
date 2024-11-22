@@ -6,6 +6,7 @@ import { useSelector } from "react-redux";
 import { Button } from "./ui/button";
 import { Badge } from "./ui/badge";
 import { AtSign, Heart, MessageCircle } from "lucide-react";
+import { toast } from "sonner";
 
 const Profile = () => {
   const params = useParams();
@@ -16,11 +17,28 @@ const Profile = () => {
   const { userProfile, user } = useSelector((store) => store.auth);
 
   const isLoggedInUserProfile = user?._id === userProfile?._id;
-  const isFollowing = false;
+  const [foll,setFoll] = useState("");
+  const isFollowing = user?.following.includes(userProfile?._id);
+  if(isFollowing){
+    setFoll("Unfollow");
+  }
 
   const handleTabChange = (tab) => {
     setActiveTab(tab);
   };
+
+  const followOrUnfollowHandle = async()=>{
+    try{
+      if(foll="Unfollow") setFoll("Follow");
+      else setFoll("Unfollow");
+      const res = await axios.post(`https://instavibe-g534.onrender.com/api/v1/user/followorunfollow/${userProfile?._id}`);
+      if(res.data.success){
+        toast.success(res.data.message);
+      } 
+    }catch(e){
+      console.log(e);
+    }
+  }
 
   const displayedPost =
     activeTab === "posts" ? userProfile?.posts : userProfile?.bookmarks;
@@ -68,16 +86,16 @@ const Profile = () => {
                   </>
                 ) : isFollowing ? (
                   <>
-                    <Button variant="secondary" className="h-8">
-                      Unfollow
+                    <Button variant="secondary" className="h-8" onClick={followOrUnfollowHandle} >
+                      {foll}
                     </Button>
                     <Button variant="secondary" className="h-8">
                       Message
                     </Button>
                   </>
                 ) : (
-                  <Button className="bg-[#0095F6] hover:bg-[#3192d2] h-8">
-                    Follow
+                  <Button className="bg-[#0095F6] hover:bg-[#3192d2] h-8" onClick={followOrUnfollowHandle}>
+                    {foll}
                   </Button>
                 )}
 
