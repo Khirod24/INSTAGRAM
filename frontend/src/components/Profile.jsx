@@ -20,20 +20,29 @@ const Profile = () => {
   const isLoggedInUserProfile = user?._id === userProfile?._id;
   
   const isFollowing = user?.following.includes(userProfile?._id);
-  let [foll,setFoll] = useState(isFollowing?"Unfollow":"Follow");
-
+  let [follLength,setFollLength] = useState(userProfile?.followers.length);
+  
   const handleTabChange = (tab) => {
     setActiveTab(tab);
   };
 
   const followOrUnfollowHandle = async()=>{
     try{
-      if(foll="Unfollow") setFoll("Follow");
-      else setFoll("Unfollow");
-      const res = await axios.post(`https://instavibe-g534.onrender.com/api/v1/user/followorunfollow/${userProfile?._id}`);
-      if(res.data.success){
-        toast.success(res.data.message);
-      } 
+      if(isFollowing){
+        const res = await axios.post(`https://instavibe-g534.onrender.com/api/v1/user/followorunfollow/${userProfile?._id}`);
+        if(res.data.success){
+         setFollLength((userProfile?.followers.length)-1);
+         isFollowing=!isFollowing;    
+         toast.success(res.data.message);
+        }
+      }else{
+        const res = await axios.post(`https://instavibe-g534.onrender.com/api/v1/user/followorunfollow/${userProfile?._id}`);
+        if(res.data.success){
+         setFollLength((userProfile?.followers.length)+1);
+         isFollowing=!isFollowing;    
+         toast.success(res.data.message);
+        }
+      }   
     }catch(e){
       console.log(e);
     }
@@ -86,7 +95,7 @@ const Profile = () => {
                 ) : isFollowing ? (
                   <>
                     <Button variant="secondary" className="h-8" onClick={followOrUnfollowHandle} >
-                      {foll}
+                      Unfollow
                     </Button>
                     <Button variant="secondary" className="h-8">
                       Message
@@ -94,7 +103,7 @@ const Profile = () => {
                   </>
                 ) : (
                   <Button className="bg-[#0095F6] hover:bg-[#3192d2] h-8" onClick={followOrUnfollowHandle}>
-                    {foll}
+                    Follow
                   </Button>
                 )}
 
@@ -109,7 +118,7 @@ const Profile = () => {
                 </p>
                 <p>
                   <span className="font-semibold">
-                    {userProfile?.followers.length}{" "}
+                    {follLength}{" "}
                   </span>
                   followers
                 </p>
