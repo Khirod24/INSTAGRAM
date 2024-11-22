@@ -17,7 +17,7 @@ const Profile = () => {
   const { userProfile, user } = useSelector((store) => store.auth);
 
   const isLoggedInUserProfile = user?._id === userProfile?._id;
-  const [foll,setFoll] = useState("");
+  let [foll,setFoll] = useState("");
   const isFollowing = user?.following.includes(userProfile?._id);
   if(isFollowing){
     setFoll("Unfollow");
