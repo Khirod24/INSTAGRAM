@@ -19,7 +19,7 @@ const Profile = () => {
 
   const isLoggedInUserProfile = user?._id === userProfile?._id;
   
-  const isFollowing = user?.following.includes(userProfile?._id);
+  let isFollowing = user?.following.includes(userProfile?._id);
   let [follLength,setFollLength] = useState(userProfile?.followers.length);
   
   const handleTabChange = (tab) => {
