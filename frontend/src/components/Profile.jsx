@@ -21,7 +21,7 @@ const Profile = () => {
   
   let isFollowing = user?.following.includes(userProfile?._id);
   let [follLength,setFollLength] = useState(userProfile?.followers.length);
-  
+  let[x,setX] = useState(isFollowing?"Unfollow":"Follow");
   const handleTabChange = (tab) => {
     setActiveTab(tab);
   };
@@ -32,14 +32,15 @@ const Profile = () => {
         const res = await axios.post(`https://instavibe-g534.onrender.com/api/v1/user/followorunfollow/${userProfile?._id}`);
         if(res.data.success){
          setFollLength((userProfile?.followers.length)-1);
-         isFollowing=!isFollowing;    
+        //  isFollowing=!isFollowing;
+        setX("Follow");    
          toast.success(res.data.message);
         }
       }else{
         const res = await axios.post(`https://instavibe-g534.onrender.com/api/v1/user/followorunfollow/${userProfile?._id}`);
         if(res.data.success){
          setFollLength((userProfile?.followers.length)+1);
-         isFollowing=!isFollowing;    
+        setX("Unfollow");    
          toast.success(res.data.message);
         }
       }   
@@ -95,7 +96,7 @@ const Profile = () => {
                 ) : isFollowing ? (
                   <>
                     <Button variant="secondary" className="h-8" onClick={followOrUnfollowHandle} >
-                      Unfollow
+                      {x}
                     </Button>
                     <Button variant="secondary" className="h-8">
                       Message
@@ -103,7 +104,7 @@ const Profile = () => {
                   </>
                 ) : (
                   <Button className="bg-[#0095F6] hover:bg-[#3192d2] h-8" onClick={followOrUnfollowHandle}>
-                    Follow
+                    {x};
                   </Button>
                 )}
 
